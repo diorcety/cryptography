@@ -22,6 +22,7 @@ INCLUDES = """
 #include <openssl/e_os2.h>
 #endif
 #if defined(_WIN32)
+#include <winsock2.h>
 #include <windows.h>
 #endif
 
