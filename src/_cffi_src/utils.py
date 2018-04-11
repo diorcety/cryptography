@@ -6,6 +6,7 @@ from __future__ import absolute_import, division, print_function
 
 import os
 import sys
+import os
 from distutils.ccompiler import new_compiler
 from distutils.dist import Distribution
 
@@ -62,6 +63,24 @@ def build_ffi_for_binding(
 
     return ffi
 
+def get_openssl_dir():
+    if 'OPENSSL_DIR' in os.environ:
+        return os.environ['OPENSSL_DIR']
+    return None
+
+def get_library_dirs():
+    ret = []
+    openssl_dir = get_openssl_dir()
+    if openssl_dir:
+        ret.append("%s%s%s" % (openssl_dir, os.path.sep, "lib"))
+    return ret
+
+def get_include_dirs():
+    ret = []
+    openssl_dir = get_openssl_dir()
+    if openssl_dir:
+        ret.append("%s%s%s" % (openssl_dir, os.path.sep, "include"))
+    return ret
 
 def build_ffi(
     module_name,
@@ -82,6 +101,8 @@ def build_ffi(
         module_name,
         verify_source,
         libraries=libraries,
+        library_dirs=get_library_dirs(),
+        include_dirs=get_include_dirs(),
         extra_compile_args=extra_compile_args,
         extra_link_args=extra_link_args,
     )
