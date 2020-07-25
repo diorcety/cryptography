@@ -16,7 +16,7 @@ def _get_openssl_libraries(platform):
     if os.environ.get("CRYPTOGRAPHY_SUPPRESS_LINK_FLAGS", None):
         return []
     # OpenSSL goes by a different library name on different operating systems.
-    if platform == "win32" and compiler_type() == "msvc":
+    if platform == "win32" and (compiler_type() == "msvc" or compiler_type() == "clang-cl"):
         windows_link_legacy_openssl = os.environ.get(
             "CRYPTOGRAPHY_WINDOWS_LINK_LEGACY_OPENSSL", None
         )
